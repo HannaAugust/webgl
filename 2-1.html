@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>canvas</title>
+
+</head>
+<body>
+<canvas id="canvas" width="600" height="300">canvas not supported</canvas>
+<script type="text/javascript">
+	var gl;
+	var canvas;
+	var shaderProgram;
+	var vertexBuffer;
+
+	function createGLContext(canvas){
+		var names = ["webgl", "experimental-webgl"];
+		var context = null;
+		for (var i=0; i < names.length; i++) {
+			try {
+				context = canvas.getContext(names[i]);
+			} catch(e) {
+				if (context) {
+					break;
+				}
+			}
+		}
+		if (context) {
+			context.viewportWidth = canvas.width;
+			context.viewportHeight = canvas.height;
+		}else{
+			alert("Failed to create WebGL context!");
+		}
+		return context;
+	}
+
+	function loadShader(type, shaderSource) {
+		var shader = gl.createShader(type);
+		gl.shaderSource(shader,shaderSource);
+		gl.compileShader(shader);
+
+		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+			alert("Error compiling shader" + gl.getShaderInfoLog(shader));
+			gl.deleteShader(shader);
+			return null;
+		}
+		return shader;
+	}
+
+	function setupShaders() {
+		var vertexShaderSource = 
+		"attribute vec3 aVertexPosition;                \n" +
+		"void main() {									\n" +
+		"	gl_position = vec4(aVertexPosition, 1.0);   \n" +
+		}												\n";
+
+		var fragmentShaderSource = 
+	}
+</script>
+</body>
+</html>
