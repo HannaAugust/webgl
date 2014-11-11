@@ -6,6 +6,7 @@
   <script src="lib/webgl-utils.js"></script>
   <script src="lib/webgl-debug.js"></script>
   <script src="lib/cuon-utils.js"></script>
+  <script src="lib/cuon-matrix.js"></script>
 
 </head>
 <body onload="main()">
@@ -59,14 +60,12 @@ function main(){
   }
 }
 
-var g_points = [];
-
 
 function initVertexBuffers(gl){
 	var verticesTexCoords = new Float32Array([
-		-0.5, -0.5,  0.0,  1.0,
+		-0.5,  0.5,  0.0,  1.0,
 		-0.5, -0.5,  0.0,  0.0,
-		 0.5, -0.5,  1.0,  1.0,
+		 0.5,  0.5,  1.0,  1.0,
 		 0.5, -0.5,  1.0,  0.0,
 	]);
 	var n = 4;
@@ -104,16 +103,29 @@ function initVertexBuffers(gl){
 function initTextures(gl, n){
 	var texture0 = gl.createTexture();
 	var texture1 = gl.createTexture();
+	if (!texture0 || !texture1) {
+	    console.log('Failed to create the texture object');
+	    return false;
+	  }
 
 	var u_Sampler0 = gl.getUniformLocation(gl.program, 'u_Sampler0');
 	var u_Sampler1 = gl.getUniformLocation(gl.program, 'u_Sampler1');
+	if (!u_Sampler0 || !u_Sampler1) {
+	    console.log('Failed to get the storage location of u_Sampler');
+	    return false;
+	  }
 
 	var image0 = new Image();
 	var image1 = new Image();
 
+	if (!image0 || !image1) {
+	    console.log('Failed to create the image object');
+	    return false;
+	  }
+
 	image0.onload = function(){ loadTexture(gl, n, texture0, u_Sampler0, image0, 0); };
 	image1.onload = function(){ loadTexture(gl, n, texture1, u_Sampler1, image1, 1); };
-	image0.src = 'resources/redflower.jpg';
+	image0.src = 'resources/sky.jpg';
 	image1.src = 'resources/circle.gif';
 
 	return true;
